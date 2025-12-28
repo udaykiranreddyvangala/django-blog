@@ -4,7 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from  blogs.models import Category,Blog
+
 
 def home(request):
-    # return HttpResponse('<h3>Hello, World!</h3>')
-    return render(request,'home-blog/home.html')
+    categories=Category.objects.all()
+    featured_blogs=Blog.objects.filter(is_featured=True,status='Published').order_by('updated_at')
+    posts=Blog.objects.filter(is_featured=False,status="Published").order_by('updated_at')
+    context={
+        'categories':categories,
+        'featured_blogs':featured_blogs,
+        'posts':posts,
+    }
+    
+    print(posts)
+    return render(request,'home.html',context)

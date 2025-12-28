@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+
+{% block content%}
+<div class="container">
+    <h3 class="text-uppercase text-warning" style="letter-spacing: 2px;">Category-{{category_name}}</h3>
+    <div class="row mb-2">
+        {% if posts%}
+        {% for blog in posts%}
+        <div class="col-md-6">
+            <div class="card border border-light">
+                <div class="card-body">
+                    <h3>{{blog.title}}</h3>
+                    <small class="mb-1 text-muted">{{blog.updated_at|timesince}} ago| {{blog.author}}</small>
+                    <p class="card-text">{{blog.short_description| truncatewords:20}}</p>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+        {%else%}
+        <p>No posts found.</p>
+        {%endif%}
+    </div>
+</div>
+{% endblock%}
