@@ -9,9 +9,11 @@
   <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark"
     style="background-image: url({{blog.featured_image.url}});background-blend-mode: overlay;background-size:cover;">
     <div class="col-md-8 px-0">
-      <h1 class="display-4 font-italic">{{blog.title}}</h1>
+      <a href="{% url 'blog-page' blog.slug%}">
+        <h1 class="display-4 font-italic">{{blog.title}}</h1>
+      </a>
       <p class="lead my-3">{{blog.short_description|truncatewords:20}}</p>
-      <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+      <p class="lead mb-0"><a href="{% url 'blog-page' blog.slug%}" class="text-white font-weight-bold">Continue reading...</a></p>
     </div>
   </div>
   {%endif%}
@@ -25,7 +27,9 @@
     <div class="col-md-6">
       <div class="card border border-light">
         <div class="card-body">
-          <h3>{{blog.title}}</h3>
+          <a href="{% url 'blog-page' blog.slug%}">
+            <h3>{{blog.title}}</h3>
+          </a>
           <small class="mb-1 text-muted">{{blog.updated_at|timesince}} ago| {{blog.author}}</small>
           <p class="card-text">{{blog.short_description| truncatewords:20}}</p>
         </div>
@@ -44,7 +48,9 @@
         {% for blog in posts%}
         <div class="card border border-light m-2">
           <div class="card-body">
-            <h3>{{blog.title}}</h3>
+            <a href="{% url 'blog-page' blog.slug%}">
+              <h3>{{blog.title}}</h3>
+            </a>
             <small class="mb-1 text-muted">{{blog.updated_at|timesince}} ago| {{blog.author}}</small>
             <p class="card-text">{{blog.short_description|truncatewords:20}}</p>
           </div>
