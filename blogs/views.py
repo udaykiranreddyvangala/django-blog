@@ -32,7 +32,7 @@ def search(request):
     blogs=Blog.objects.filter(Q(title__icontains=keyword)|Q(short_description__icontains=keyword)|Q(blog_body=keyword),status='Published')
     context={
         'posts':blogs,
-        'keyword':keyword
+        'keyword':keyword   
     }
     return render(request,'search.html',context)
-    # return HttpResponse('{{}}')
+    
