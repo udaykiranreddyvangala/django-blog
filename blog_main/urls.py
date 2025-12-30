@@ -27,6 +27,7 @@ urlpatterns = [
     path('logout/',views.logout_view,name='logout'),
     path('',views.home,name='home-page'),
     path('category/',include('blogs.urls')),
-    path('blog/search/',blogs_views.search,name='search'), 
+    path('blog/search/',blogs_views.search,name='search'),
+    path('dashboard/',include('dashboards.urls')), 
     path('<slug:slug>/',blogs_views.blog_page,name="blog-page")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
