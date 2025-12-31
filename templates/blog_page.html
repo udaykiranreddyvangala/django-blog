@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% block content%}
+{%load crispy_forms_tags%}
 <!-- Page content-->
 <div class="container mt-5">
     <div class="row">
@@ -13,20 +14,52 @@
                     <!-- Post meta content-->
                     <div class="text-muted fst-italic mb-2">Posted on {{post.updated_at}} by {{post.author}}</div>
                     <!-- Post category-->
-                    <a class="badge bg-primary text-decoration-none text-light" href="{% url "posts_by_category" post.category_id%}">{{post.category}}</a>
+                    <a class="badge bg-warning text-decoration-none text-light" href="{% url " posts_by_category"
+                        post.category_id%}">{{post.category}}</a>
                 </header>
                 <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded card-img-top" src="{{ post.featured_image.url}}" alt="..." /></figure>
+                <figure class="mb-4"><img class="img-fluid rounded card-img-top" src="{{ post.featured_image.url}}"
+                        alt="..." /></figure>
                 <!-- Post content-->
                 <section class="mb-5">
                     <p class="fs-5 mb-4">{{post.short_description}}</p>
                     <p class="fs-5 mb-4">{{post.blog_body}}</p>
                 </section>
+                <h3 class="text-warning">Comments({{comment_count}})</h3>
+                <!-- Comments Section -->
+                <div class="row mb-2">
+                    {%if messages%}
+                    {% for mssg in messages%}
+                    <h2style="color: red;font-size:medium;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-style:oblique">{{mssg}}</h2>
+                    {% endfor %}
+                    {% endif %}
+                    <form class="m-4" method="POST">
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        <button type="submit" class="btn btn-warning">comment</button>
+                    </form>
+                    <br>
+                    {%if comments%}
+                    {% for comment in comments%}
+                    <div class="col-md-8 m-2">
+                        <div class="card border border-light">
+                            <div class="card-body">
+                                <small class="mb-1 text-muted">{{comment.user}}|{{comment.created_at}}</small>
+                                <p class="card-text">{{comment.comment}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                    {%else%}
+                    <h5 class="m-2">No Comments</h5>
+                    {%endif%}
+                    
+                </div>
             </article>
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
-            
+
             <!-- Categories widget-->
             <div class="card mb-4 p-3">
                 <h4 class="font-italic">Categories</h4>
@@ -35,7 +68,8 @@
                         <div class="col-sm-12">
                             <ul class="list-unstyled mb-0">
                                 {% for category in categories%}
-                                <li><a href="{% url 'posts_by_category' category.id%}">{{category.category_name}}</a></li>
+                                <li><a href="{% url 'posts_by_category' category.id%}">{{category.category_name}}</a>
+                                </li>
                                 {% endfor%}
                             </ul>
                         </div>
