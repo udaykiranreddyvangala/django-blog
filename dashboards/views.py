@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from blogs.models import Category,Blog
 from django.contrib.auth.decorators import login_required
 from .forms import CategoryForm,BlogForm
+from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 # Create your views here.
 @login_required(login_url='login-page')
@@ -79,17 +81,43 @@ def posts(request):
     return render(request,'dashboard/posts.html',context)
 
 def add_post(request):
-    if request.method=="POST":
-        blog_title=request.POST.get('blog_title')
+    if request.method=='POST':
+        form=BlogForm(request.POST,request.FILES)
         
-        new_blog=Blog(title=blog_title)
-        new_blog.save()
-        return redirect('categories')
-    
-    return render(request,'dashboard/add_post.html')
+        if form.is_valid():
+            post=form.save(commit=False)#commit=false do not update database yet,but gives an object with updated data
+            
+            post.author=request.user
+            post.save()
+            post.slug=slugify(post.title)+'-'+str(post.id)
+            post.save()
+            
+            return redirect('posts')
+    else:
+        form=BlogForm()
+    context={
+        'form':form,
+    }
+    return render(request,'dashboard/add_post.html',context)
        
 def edit_post(request,id):
-    pass
+    req_post=get_object_or_404(Blog,id=id)
+    if request.method=='POST':
+        form=BlogForm(request.POST,instance=req_post)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('posts')
+    else:
+        form=BlogForm(instance=req_post)
+    context={
+        'form':form,
+        'req_post':req_post,
+    }
+    return render(request,'dashboard/edit_post.html',context)
 
 def delete_post(request,id):
-    pass
+    req_post=get_object_or_404(Blog,id=id)
+    req_post.delete()
+    return redirect('posts')
+    

@@ -18,7 +18,7 @@ STATUS_CHOICES=(
 )
 class Blog(models.Model):
     title=models.CharField(max_length=100,unique=True)
-    slug=models.SlugField(unique=True)
+    slug=models.SlugField(max_length=150,unique=True,blank=True)
     category=models.ForeignKey(Category,on_delete=models.CASCADE)
     author=models.ForeignKey(User,on_delete=models.CASCADE)
     featured_image=models.ImageField(upload_to='uploads/%Y/%m/%d')
