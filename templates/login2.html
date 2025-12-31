@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block content%}
+{%load crispy_forms_tags%}
+
+<h3 class="text-center">Login</h3>
+{% if messages %}
+{% for mssg in messages%}
+<h2
+    style="color: red;font-size:medium;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-style:oblique">
+    {{mssg}}</h2>
+{% endfor %}
+{% endif %}
+<form style="width: 40%;margin:0 auto" action="{% url 'login-page'%}" method="POST">
+    {% csrf_token %}
+    {{form | crispy}}
+    <button type="submit" class="btn btn-warning">Login</button>
+</form>
+{%endblock%}

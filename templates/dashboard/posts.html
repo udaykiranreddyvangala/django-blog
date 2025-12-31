@@ -8,23 +8,47 @@
         <!-- right side content -->
         <div class="col-md-9">
             <h2>All Posts</h2>
+            <a href="{% url 'add_post' %}">
+                <button class="btn float-right mb-2 btn-dark">Add New</button>
+            </a>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Post Name</th>
+                        <th>Blog title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Featured</th>
                         <th>Created at</th>
                         <th>Updated at</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for category in categories%}
+                    {% for blog in posts%}
                     <tr>
-                        <td>{{category.id}}</td>
-                        <td>{{category.category_name}}</td>
-                        <td>{{category.created_at}}</td>
-                        <td>{{category.updated_at}}</td>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{blog.title}}</td>
+                        <td>{{blog.category}}</td>
+                        <td>{{blog.author}}</td>
+                        <td>{{blog.status}}</td>
+                        {% if blog.is_featured%}
+                        <td>Yes</td>
+                        {%else%}
+                        <td>No</td>
+                        {%endif%}
+                        <td>{{blog.created_at}}</td>
+                        <td>{{blog.updated_at}}</td>
+                        <td>
+                            <a href="{% url 'edit_post' blog.id%}">
+                            <i class="fa fa-edit text-success"></i>
+                            </a>
+                            &nbsp;
+                             <a href="{% url 'delete_post' blog.id%}">
+                            <i class="fa fa-trash text-danger"></i>
+                            </a>
+                        </td>
                     </tr>
                     {%endfor%}
                 </tbody>

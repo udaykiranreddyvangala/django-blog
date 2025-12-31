@@ -53,8 +53,25 @@ def delete_category(request,id):
     
 
 def posts(request):
-    posts=Category.objects.all()
+    posts=Blog.objects.all()
     context={
         'posts':posts
     }
     return render(request,'dashboard/posts.html',context)
+
+def add_post(request):
+    if request.method=="POST":
+        blog_title=request.POST.get('blog_title')
+        
+        new_blog=Blog(title=blog_title)
+        new_blog.save()
+        return redirect('categories')
+    
+    return render(request,'dashboard/add_post.html')
+    
+    
+def edit_post(request,id):
+    pass
+
+def delete_post(request,id):
+    pass
